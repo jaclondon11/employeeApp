@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+
+        <script src="employeeApp.js"></script>
+        <link href="employee-ui.css" rel="stylesheet">
+    </head>
+<body>
+
+<script>
+
+</script>
+
+<div ng-app="employeeApp" 
+    ng-cloak ng-controller="employeeController" 
+    ng-init="init()"
+    class="card-app container">
+    <header class="header-container">
+        <h3>Employee App</h3>
+    </header>
+    <br/>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <label for="idEmployee">ID:</label>
+                <input id="idEmployee" 
+                    placeholder="filter employee by ID" 
+                    ng-model="idEmployee" 
+                    class="form-control"> 
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <button ng-click="getEmployee()" class="btn btn-primary">Get Employees</button>    
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="alert alert-info alert-dismissible fade show" ng-show="showInfo">
+        Employee list fetched successfully
+    </div>
+    <div class="alert alert-danger alert-dismissible fade show" ng-show="showDanger">
+        Not Employee found with requested ID.
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>Contract Type</th>
+                <th>Anual Salary</th>
+                <th>Partial Salary</th>
+            </tr>
+        </thead>
+        <tr ng-repeat="employee in employees">
+            <td>{{ employee.id }}</td>
+            <td>{{ employee.fullName }}</td>
+            <td>{{ employee.contract }}</td>
+            <td>{{ employee.anualSalary | currency : symbol : fractionsize }}</td>
+            <td>{{ employee.partialSalary | currency : symbol : fractionsize }}</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

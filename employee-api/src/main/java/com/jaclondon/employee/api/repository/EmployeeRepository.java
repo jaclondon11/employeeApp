@@ -2,7 +2,7 @@ package com.jaclondon.employee.api.repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
@@ -55,11 +55,10 @@ public class EmployeeRepository {
 		return employeeList;
 	}
 
-	public Employee findById(Long id) {
-		Optional<Employee> optionalEmployee = employeeList.stream()
+	public List<Employee> findById(Long id) {
+		return employeeList.stream()
 			.filter(emp -> id.equals(emp.getId()))
-			.findFirst();		
-		return optionalEmployee.isPresent() ? optionalEmployee.get() : null;
+			.collect(Collectors.toList());		
 	}
 
 }

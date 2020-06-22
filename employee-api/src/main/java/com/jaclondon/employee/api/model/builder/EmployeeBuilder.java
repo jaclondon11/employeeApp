@@ -27,8 +27,10 @@ public class EmployeeBuilder {
 			switch (contractType) {
 			case HOURLY:
 				builder.employee = new EmployeeHourly();
+				break;
 			case MONTHLY:
 				builder.employee = new EmployeeMonthly();
+				break;
 			default:
 				builder.employee = new EmployeeMonthly();
 			}

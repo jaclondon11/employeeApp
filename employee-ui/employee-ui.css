@@ -1,0 +1,10 @@
+.card-app{
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+.header-container{
+    padding: 0em 16px;
+    background-color: #f1f1f1;
+    padding-top: 16px;
+    padding-bottom: 16px;
+}
