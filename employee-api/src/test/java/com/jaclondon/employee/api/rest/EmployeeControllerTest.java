@@ -1,21 +1,22 @@
 package com.jaclondon.employee.api.rest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -26,11 +27,12 @@ import com.jaclondon.employee.api.model.Employee;
 import com.jaclondon.employee.api.model.builder.EmployeeBuilder;
 import com.jaclondon.employee.api.service.EmployeeService;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { TestConfig.class })
-@WebAppConfiguration
+@AutoConfigureMockMvc
+@ContextConfiguration(classes = { TestConfig.class, EmployeeController.class })
+@WebMvcTest
 public class EmployeeControllerTest {
 	
+	@Autowired
 	private MockMvc mockMvc;
 	
 	@Autowired
@@ -38,20 +40,45 @@ public class EmployeeControllerTest {
 	@Autowired
 	private EmployeeService employeeService;
 
-	@Before
+	@BeforeEach
 	public void before() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 		MockitoAnnotations.initMocks(this);
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 	}
 	
-//	@Test
-	public void shouldReturnEmployeeListWhenNoIdRequested() {
-//		List<Employee> employeeListMock = createEmployeeListExpected();
+	
+	@Test
+	public void shouldRespondStatusOKWhenGetAllEmployee() throws Exception {
+		List<Employee> employeeListMock = new ArrayList<>();
+		when(employeeService.getAll()).thenReturn(employeeListMock);
 		
-//		when(employeeService.getAll()).thenReturn(employeeListMock);
-		
-//		mockMvc.perform(get("/employees"));
+		mockMvc.perform(get("/api/employee"))
+			.andExpect(status().isOk());
 	}
+	
+	@Test
+	public void shouldRespondEmployeeListWhenIdRequested() throws Exception {
+		List<Employee> employeeListMock = createEmployeeListExpected();
+		when(employeeService.get(1l)).thenReturn(employeeListMock);
+		
+		mockMvc.perform(get("/api/employee/1"))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(1)))
+			.andExpect(
+					jsonPath("$[0].fullName",
+							is(employeeListMock.get(0).getFullName())));
+	}
+	
+	@Test
+	public void shouldRespondEmployeeListEmptyAndStatusNotFoundWhenIdRequestedNotExist() throws Exception {
+		List<Employee> employeeListMock = new ArrayList<>();
+		when(employeeService.get(1l)).thenReturn(employeeListMock);
+		
+		mockMvc.perform(get("/api/employee/99"))
+			.andExpect(status().isNotFound())
+			.andExpect(jsonPath("$", hasSize(0)));
+	}
+	
 	
 	
 
@@ -59,30 +86,10 @@ public class EmployeeControllerTest {
 		List<Employee> employeeList = new ArrayList<>();
 		
 		Employee employee = EmployeeBuilder
-				.createEmployeeWithContract(ContractType.HOURLY)
-				.withFullName("Jhoel Acosta Londono")
-				.withSalary(30f)
-				.getResult();
-		employeeList.add(employee);
-		
-		employee = EmployeeBuilder
-				.createEmployeeWithContract(ContractType.MONTHLY)
-				.withFullName("Jane Roe")
-				.withSalary(4_200f)
-				.getResult();
-		employeeList.add(employee);
-		
-		employee = EmployeeBuilder
 				.createEmployeeWithContract(null)
+				.withId(1l)
 				.withFullName("John Doe")
 				.withSalary(2_500f)
-				.getResult();
-		employeeList.add(employee);
-		
-		employee = EmployeeBuilder
-				.createEmployeeWithContract(ContractType.HOURLY)
-				.withFullName("Joe Public")
-				.withSalary(25.5f)
 				.getResult();
 		employeeList.add(employee);
 		

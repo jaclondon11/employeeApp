@@ -1,9 +1,8 @@
 package com.jaclondon.employee.api.model;
 
+
 /**
- * 
- * @author Jhoel
- *
+ * Defines the type of contract of {@link Employee}.
  */
 public enum ContractType {
 	HOURLY,

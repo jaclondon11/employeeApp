@@ -52,7 +52,7 @@
                 <th>ID</th>
                 <th>Full Name</th>
                 <th>Contract Type</th>
-                <th>Anual Salary</th>
+                <th>Yearly Salary</th>
                 <th>Partial Salary</th>
             </tr>
         </thead>
@@ -60,7 +60,7 @@
             <td>{{ employee.id }}</td>
             <td>{{ employee.fullName }}</td>
             <td>{{ employee.contract }}</td>
-            <td>{{ employee.anualSalary | currency : symbol : fractionsize }}</td>
+            <td>{{ employee.annualSalary | currency : symbol : fractionsize }}</td>
             <td>{{ employee.partialSalary | currency : symbol : fractionsize }}</td>
         </tr>
     </table>

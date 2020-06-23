@@ -1,7 +1,9 @@
 var app = angular.module("employeeApp", []); 
 app.controller("employeeController", function($scope, $http) {
 
-    var employeeRoute = "http://localhost:8080/api/employee/";
+
+    var apiendpoint = "http://localhost:8080/";
+    var employeeRoute = "api/employee/";
 
     $scope.showInfo = false;
     $scope.showDanger = false;
@@ -35,12 +37,12 @@ app.controller("employeeController", function($scope, $http) {
 
 
     function allEmployees() {
-        return $http.get(employeeRoute)
+        return $http.get(apiendpoint + employeeRoute)
             .then(function (response) { return response.data; });
     }
 
     function employeeByID(param) {
-        return $http.get(employeeRoute + param);
+        return $http.get(apiendpoint + employeeRoute + param);
     }
 
 

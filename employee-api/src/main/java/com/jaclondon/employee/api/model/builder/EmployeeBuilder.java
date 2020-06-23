@@ -5,6 +5,12 @@ import com.jaclondon.employee.api.model.Employee;
 import com.jaclondon.employee.api.model.factory.EmployeeHourly;
 import com.jaclondon.employee.api.model.factory.EmployeeMonthly;
 
+/**
+ * Builder utility to instantiate an {@link EmployeeHourly} or {@link EmployeeMonthly} 
+ * depending on {@link ContractType}
+ * @author Jhoel
+ *
+ */
 public class EmployeeBuilder {
 
 	private Employee employee;
@@ -14,7 +20,7 @@ public class EmployeeBuilder {
 	}
 
 	/**
-	 * Create an {@link EmployeeBuilder} with a specific {@link ContractType} if contractType is not especified then
+	 * Create an {@link EmployeeBuilder} with a specific {@link ContractType} if contractType is not specified then
 	 * contractType will be assigned as MONTHLY
 	 * @param contractType
 	 * @return
@@ -54,6 +60,10 @@ public class EmployeeBuilder {
 		return this;
 	}
 
+	/**
+	 * Return the employee builded with its attributes 
+	 * @return employee
+	 */
 	public Employee getResult() {
 		return employee;
 	}

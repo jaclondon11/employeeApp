@@ -1,31 +1,65 @@
 package com.jaclondon.employee.api.model;
 
-import com.jaclondon.employee.api.util.AnualSalaryFunction;
+import com.jaclondon.employee.api.util.AnnualSalaryFunctionByHour;
 
-public abstract class Employee{
+/**
+ * Represents the template fields of an employee
+ * which AnnualSalaryMethod must be implemented by extended classes
+ *
+ * 
+ * @author Jhoel
+ *
+ */
+public abstract class Employee implements Comparable<Employee>{
 
 	private Long id;
 	private String fullName;
 	private ContractType contract;
-	private float anualSalary;
+	private float annualSalary;
 	private float partialSalary;
 	
-	private AnualSalaryFunction anualSalaryMethod;
+	private AnnualSalaryFunctionByHour annualSalaryMethod;
 	
-	public Employee() {
-		super();
-	}
-
-	public Employee(ContractType contract, AnualSalaryFunction anualSalaryMethod) {
+	public Employee(ContractType contract, AnnualSalaryFunctionByHour annualSalaryMethod) {
 		super();
 		this.contract = contract;
-		addCalculateAnualSalaryMethod(anualSalaryMethod);
+		addCalculateAnnualSalaryMethod(annualSalaryMethod);
 	}
 	
-	protected void addCalculateAnualSalaryMethod(AnualSalaryFunction anualSalaryMethod) {
-		this.anualSalaryMethod = anualSalaryMethod;
+	protected void addCalculateAnnualSalaryMethod(AnnualSalaryFunctionByHour annualSalaryMethod) {
+		this.annualSalaryMethod = annualSalaryMethod;
 	}
 	
+	@Override
+	public int compareTo(Employee o) {
+		return this.getId().compareTo( o.getId() );
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Employee other = (Employee) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -46,16 +80,16 @@ public abstract class Employee{
 		return contract;
 	}
 
-	public void setContract(ContractType contract) {
+	protected void setContract(ContractType contract) {
 		this.contract = contract;
 	}
 
-	public float getAnualSalary() {
-		return anualSalary;
+	public float getAnnualSalary() {
+		return annualSalary;
 	}
 	
-	protected void setAnualSalary(float anualSalary) {
-		this.anualSalary = anualSalary;
+	protected void setAnnualSalary(float annualSalary) {
+		this.annualSalary = annualSalary;
 	}
 	
 	public float getPartialSalary() {
@@ -64,11 +98,11 @@ public abstract class Employee{
 
 	public void setPartialSalary(float partialSalary) {
 		this.partialSalary = partialSalary;
-		calculatedAnualSalary();
+		calculatedAnnualSalary();
 	}
 
-	private void calculatedAnualSalary() {
-		this.anualSalary = anualSalaryMethod.function(partialSalary);
+	private void calculatedAnnualSalary() {
+		this.annualSalary = annualSalaryMethod.function(partialSalary);
 	}
 
 }
